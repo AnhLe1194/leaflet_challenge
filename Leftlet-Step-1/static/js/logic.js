@@ -40,57 +40,36 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
     return mag*4
   }
 
-  function Color(depth){
-    switch (depth) {
-    case "1":
-        return "yellow";
-    case "2":
-        return "red";
-    case "3":
-        return "orange";
-    case "4":
-        return "green";
-    case "5":
-        return "purple";
-    default:
-        return "black";
+  function getColorValue(number) {
+  
+    if (number >= 5) {
+      return 'green'
+    } else if (number >= 4) {
+      return '#32CD32'
+    } else if (number >= 3) {
+      return '#00FA9A'
+    } else if (number >= 2) {
+      return '#FF8C00'
+    } else if (number >= 1) {
+      return '#FFA07A'
+    } else if (number >= 0) {
+      return '#FF00FF'
+    } else if (number >= -1) {
+      return '#B22222'
+    } else {
+      return '#B22222'
     }
   }
-
-
-
-
 
   L.geoJson(data, {
     pointToLayer: function(feature, coordinate){
       return L.circleMarker(coordinate)
     },
-
-
-  geojson = L.choropleth(data, {
-
-      // Define what  property in the features to use
-  valueProperty: "MHI2016",
-  
-      // Set color scale
-  scale: ["#ffffb2", "#b10026"],
-  
-      // Number of breaks in step range
-  steps: 10,
-  
-      // q for quartile, e for equidistant, k for k-means
-  mode: "q",
-  style: {
-        // Border color
-  color: "#fff",
-  weight: 1,
-  fillOpacity: 0.8
-  }
     style: function(feature) {
       return {
         color: "white",
         // Call the chooseColor function to decide which color to color our neighborhood (color based on borough)
-        fillColor: Color(feature.geometry.coordinates[2]),
+        fillColor: getColorValue(feature.geometry.coordinates[2]),
         fillOpacity: 0.5,
         weight: 1.5,
         radius: Radius(feature.properties.mag)
@@ -99,18 +78,6 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   }).addTo(earthquakes)
   earthquakes.addTo(map)
 });
-
-d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson", function(data) {
-
-  // Create a new choropleth layer
-  ,
-
-    // Binding a pop-up to each layer
-  //   onEachFeature: function(feature, layer) {
-  //     layer.bindPopup("Zip Code: " + feature.geometry.coordinates[2] + "<br>Median Household Income:<br>" +
-  //        + feature.properties.mag);
-  //   }
-  // }).addTo(myMap);
 
 
 // Create the tile layer that will be the background of our map
