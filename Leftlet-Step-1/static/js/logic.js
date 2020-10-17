@@ -42,25 +42,50 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
 
   function Color(depth){
     switch (depth) {
-    case "Brooklyn":
+    case "1":
         return "yellow";
-    case "Bronx":
+    case "2":
         return "red";
-    case "Manhattan":
+    case "3":
         return "orange";
-    case "Queens":
+    case "4":
         return "green";
-    case "Staten Island":
+    case "5":
         return "purple";
     default:
         return "black";
     }
   }
 
+
+
+
+
   L.geoJson(data, {
     pointToLayer: function(feature, coordinate){
       return L.circleMarker(coordinate)
     },
+
+
+  geojson = L.choropleth(data, {
+
+      // Define what  property in the features to use
+  valueProperty: "MHI2016",
+  
+      // Set color scale
+  scale: ["#ffffb2", "#b10026"],
+  
+      // Number of breaks in step range
+  steps: 10,
+  
+      // q for quartile, e for equidistant, k for k-means
+  mode: "q",
+  style: {
+        // Border color
+  color: "#fff",
+  weight: 1,
+  fillOpacity: 0.8
+  }
     style: function(feature) {
       return {
         color: "white",
@@ -74,6 +99,18 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   }).addTo(earthquakes)
   earthquakes.addTo(map)
 });
+
+d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson", function(data) {
+
+  // Create a new choropleth layer
+  ,
+
+    // Binding a pop-up to each layer
+  //   onEachFeature: function(feature, layer) {
+  //     layer.bindPopup("Zip Code: " + feature.geometry.coordinates[2] + "<br>Median Household Income:<br>" +
+  //        + feature.properties.mag);
+  //   }
+  // }).addTo(myMap);
 
 
 // Create the tile layer that will be the background of our map
