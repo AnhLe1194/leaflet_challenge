@@ -104,31 +104,28 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
 var legend = L.control({ position: "bottomright" });
   legend.onAdd = function() {
     var div = L.DomUtil.create("div", "info legend");
-    var limits =  ['+90', '70-90', '50-70', '30-50', '10-30', '-10 - 10'];
+    var limits = [-10, 10, 30, 50, 70, 90];
     var colors = ['red', '#32CD32', '#00FA9A', '#FF8C00', '#FFA07A', '#FF00FF', 'pink'];
     var labels = [];
 
     // Add min & max
-    var legendInfo = "<h1> Depth </h1>" +
-      "<div class=\"labels\">" +
-        "<div class=\"min\">" + limits[0] + "</div>" +
-        "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-      "</div>";
+    var legendInfo = "<h1> Depth </h1>";
+      // "<div class=\"labels\">" +
+      //   "<div class=\"1\">" + limits[0] + "</div>" +
+      //   "<div class=\"2\">" + limits[limits.length - 1] + "</div>" +
+      // "</div>";
 
     div.innerHTML = legendInfo;
 
     limits.forEach(function(limit, index) {
-      labels.push("<li style=\"background-color: " + colors[index] + "\"></li>");
-    });
+      var newHtml = `<i style="background: colors[index]"></i>`;
 
-    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-    return div;
-  };
+      newHtml += limits[i] + (limits[i + 1] ? '&ndash;' + limits[i + 1] + '<br>' : '+');
+  
+      div.innerHTML += newHtml;
+  });
+
 
   // Adding legend to the map
 legend.addTo(map);
-
-
 });
-
-
